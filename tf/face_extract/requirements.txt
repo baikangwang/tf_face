@@ -1,2 +1,1 @@
-google-cloud==0.22.0
 Pillow==4.0.0

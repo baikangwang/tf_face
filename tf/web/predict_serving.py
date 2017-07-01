@@ -1,8 +1,6 @@
 from flask import Flask, Response, request, jsonify, render_template
 from PIL import Image, ImageDraw
 from io import BytesIO
-from googleapiclient import discovery
-from oauth2client.service_account import ServiceAccountCredentials
 from grpc.beta import implementations
 
 from tensorflow_serving.apis import predict_pb2
@@ -28,18 +26,9 @@ tf.app.flags.DEFINE_integer('image_channels', 3, 'Number of image channels')
 tf.app.flags.DEFINE_float('timeout', 5.0, 'Prediction grpc timeout in seconds')
 tf.app.flags.DEFINE_integer('max_predictions', 10, 'Maximum number of predictions')
 
-SCOPES = 'https://www.googleapis.com/auth/cloud-platform'
 FLAGS = tf.app.flags.FLAGS
 
 flask_app = Flask(__name__, static_url_path='')
-vision_svc = None
-
-def get_vision_service():
-    print("-initial_cred")
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        os.path.join(resources.__path__[0], 'vapi-acct.json'), SCOPES)
-    print(credentials)
-    return discovery.build('vision', 'v1', credentials=credentials)
 
 @flask_app.route('/', methods=['GET'])
 def get_index():
@@ -161,56 +150,6 @@ def detect_face_opencv(image_content):
 
     return top, left, bottom, right, rgb
 
-def detect_face(image_content):
-
-    request_dict = [{
-        'image': {
-            'content': base64.b64encode(image_content)
-            #'content': image_content
-            },
-        'features': [{
-            'type': 'FACE_DETECTION',
-            'maxResults': 1,
-            }]
-        }]
-
-    (top, left, bottom, right, rgb) = 0, 0, 0, 0, None
-
-    try:
-        vision_svc = get_vision_service()
-        print("+initial_vision")
-        request = vision_svc.images().annotate(body={
-            'requests': request_dict
-        })
-        print("+build_request")
-        response = request.execute()
-        print("+executed")
-
-        face_bounds = response['responses'][0]['faceAnnotations'][0]['fdBoundingPoly']['vertices']
-
-        if (len(face_bounds) == 4):
-            left = face_bounds[0]['x']
-            top = face_bounds[0]['y']
-            right = face_bounds[2]['x']
-            bottom = face_bounds[2]['y']
-
-            im = Image.open(BytesIO(image_content))
-            face_im = im.crop((left, top, right, bottom)).resize((FLAGS.image_size, FLAGS.image_size))
-            rgb = numpy.array(face_im.convert('RGB'))
-            rgb = numpy.divide(rgb, 255.0)
-            rgb = numpy.expand_dims(rgb, axis=0)
-
-            # numpy.set_printoptions(threshold=numpy.shape(rgb))
-            # numpy.array2string(rgb, separator=',', max_line_width=None).replace('\n', '')
-
-            rgb = rgb.astype(numpy.float32)
-
-
-    except Exception, e:
-        print("Something went wrong: %s" % str(e))
-
-    return top, left, bottom, right, rgb
-
 def recognise_face(rgb):
     channel = implementations.insecure_channel(FLAGS.host, FLAGS.port)
     print("+channel")
@@ -234,5 +173,4 @@ def main(_):
     flask_app.run(host='127.0.0.1', port=8080)
 
 if __name__ == '__main__':
-    # vision_svc = get_vision_service()
     tf.app.run()
