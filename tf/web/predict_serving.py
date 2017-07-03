@@ -27,8 +27,10 @@ tf.app.flags.DEFINE_float('timeout', 5.0, 'Prediction grpc timeout in seconds')
 tf.app.flags.DEFINE_integer('max_predictions', 10, 'Maximum number of predictions')
 
 FLAGS = tf.app.flags.FLAGS
-
-flask_app = Flask(__name__, static_url_path='')
+bazelRelRoot = os.path.join(os.path.abspath('tf_models'),'tf_face','tf','web')
+flask_app = Flask(__name__, 
+    static_folder=os.path.join(bazelRelRoot, 'static'),
+    static_url_path=os.path.join(bazelRelRoot,'static'))
 
 @flask_app.route('/', methods=['GET'])
 def get_index():
@@ -93,8 +95,8 @@ def detect_face_opencv(image_content):
 
         # Get user supplied values
         # imagePath = sys.argv[1]
-        cascPath = "haarcascade_frontalface_default.xml"
-
+        cascPath = flask_app._static_folder+"/haarcascade_frontalface_default.xml"
+        print(cascPath)
         # Create the haar cascade
         faceCascade = cv2.CascadeClassifier(cascPath)
 
@@ -170,7 +172,7 @@ def recognise_face(rgb):
     return values
 
 def main(_):
-    flask_app.run(host='127.0.0.1', port=8080)
+    flask_app.run(host='192.168.33.30', port=8080)
 
 if __name__ == '__main__':
     tf.app.run()
