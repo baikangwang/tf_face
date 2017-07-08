@@ -58,7 +58,7 @@
   <div class="container">
 
     <div class="starter-template">
-      <h1>Classifying faces using Google Cloud Vision API, TensorFlow and Cloud ML</h1>
+      <h1>Classifying faces using OpenCV, TensorFlow</h1>
       <p class="lead">Upload a picture of your favourite celebrity and I'll tell you who it is.</p>
       <p>
         <h4>I have been trained to identify the following people (<a href="#" onclick="toggleMore()">expand</a>).</h4>
@@ -92,7 +92,7 @@
         </form>
       </div>
       <div id="loading" style="display: none" class="center_div">
-        <img src="hourglass.gif" class="loading_img"/>Thinking about it ...
+        <img src="{{url_for('static',filename='hourglass.gif')}}" class="loading_img"/>Thinking about it ...
       </div>
       <div id="prediction" style="display: none" class="center_div">
         <p><h4>I think this is {{ prediction_1 }} ({{ score_1 }}%).</h4></p>

@@ -1,3 +1,10 @@
 data/
 .idea/
 lib/
+*.pyc
+.vscode/
+*.tar.gz
+classes.txt
+logs/
+model/
+valid.txt

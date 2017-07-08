@@ -11,19 +11,19 @@
 # NOTE 2: to use the Vision API for face cropping, you need to have created a GCP
 # project and activated Vision API.  You'll also need to create a service account.
 
-mkdir data
+# mkdir data_test
 
 # Download PubFig evaluation dataset
-python tf/face_extract/pubfig_get.py tf/face_extract/eval_urls.txt ./data
+# python tf/face_extract/pubfig_get.py tf/face_extract/eval_urls_test.txt ./data_test
 
 # We'll have duplicates due to files with the same name. Remove them
-cat ./data/manifest.txt | sort | uniq > ./data/manifest_uniq.txt
+# cat ./data_test/manifest.txt | sort | uniq > ./data_test/manifest_uniq.txt
 
 # Crop faces using the Vision API.  This needs a service account.
-python tf/face_extract/crop_faces.py ./data/manifest_uniq.txt $PWD 0
+# python tf/face_extract/crop_faces.py ./data/manifest_uniq_test.txt $PWD
 
 # Finally split the dataset so we have some validation data
-python tf/face_extract/split_data.py ./data/opencv-manifest.txt ./data/train.txt ./data/valid.txt
+python tf/face_extract/split_data.py ./data_test/opencv-manifest.txt ./data_test/train.txt ./data_test/valid.txt
 
 # Create a tarball to upload to GCS.
-find ./data -type f \( -name "crop_*" -o -name "*.txt" \) -print0 | tar czvf out.tar.gz --null -T -
+# find ./data_test -type f \( -name "crop_*" -o -name "*.txt" \) -print0 | tar czvf out.tar.gz --null -T -

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import os
 import re
 import math
 
@@ -55,14 +56,21 @@ if __name__ == "__main__":
 
         tokens = line.split(SPLIT_CHAR)
         file_path = tokens[0]
-        file_class = file_path.split('/')[CLASS_PATH_DEPTH]
-        pan = float(tokens[1])
-        roll = float(tokens[2])
-        tilt = float(tokens[3])
 
-        if (MIN_PAN <= pan <= MAX_PAN and
-            MIN_ROLL <= roll <= MAX_ROLL and
-            MIN_TILT <= tilt <= MAX_TILT):
+        # check if the image dose still exist
+        if not os.path.isfile(file_path):
+            print "%s| Not exists" % file_path
+            continue
+
+        file_class = file_path.split('/')[CLASS_PATH_DEPTH]
+        #pan = float(tokens[1])
+        #roll = float(tokens[2])
+        #tilt = float(tokens[3])
+
+        if True:
+            # (MIN_PAN <= pan <= MAX_PAN and
+           # MIN_ROLL <= roll <= MAX_ROLL and
+           # MIN_TILT <= tilt <= MAX_TILT):
 
             if REWRITE_CLASS == True:
                 file_class = str(class_num)
