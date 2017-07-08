@@ -10,7 +10,7 @@ from Queue import Queue
 import imghdr
 
 NUM_THREADS = 1
-CASCPATH='./tf/face_extract/haarcascade_frontalface_faceTracker.xml'
+CASCPATH='./tf/face_extract/haarcascade_frontalface_default.xml'
 
 class MetaWriterThread(threading.Thread):
     def __init__(self, queue, output_dir, batch_index):
@@ -71,8 +71,8 @@ class OpencvThread(threading.Thread):
 
                 faces = faceCascade.detectMultiScale(
                     gray,
-                    scaleFactor=1.4,
-                    minNeighbors=4,
+                    scaleFactor=1.2,
+                    minNeighbors=5,
                     minSize=(30,30)
                 )
 
