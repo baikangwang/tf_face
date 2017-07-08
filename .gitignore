@@ -4,6 +4,7 @@ lib/
 *.pyc
 .vscode/
 *.tar.gz
+*.zip
 classes.txt
 logs/
 model/
