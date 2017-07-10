@@ -95,7 +95,7 @@ def detect_face_opencv(image_content):
 
         # Get user supplied values
         # imagePath = sys.argv[1]
-        cascPath = flask_app._static_folder+"/haarcascade_frontalface_faceTracker.xml"
+        cascPath = flask_app._static_folder+"/haarcascade_frontalface_default.xml"
         print(cascPath)
         # Create the haar cascade
         faceCascade = cv2.CascadeClassifier(cascPath)
@@ -118,7 +118,7 @@ def detect_face_opencv(image_content):
         faces = faceCascade.detectMultiScale(
             gray,
             scaleFactor=1.2,
-            minNeighbors=1,
+            minNeighbors=5,
             minSize=(30, 30)
             #flags = cv2.CV_HAAR_SCALE_IMAGE
         )

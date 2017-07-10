@@ -21,11 +21,11 @@ FLAGS = flags.FLAGS
 # hyperparameters to use for training
 flags.DEFINE_integer('train_batch_size', 200, 'Training batch size')
 flags.DEFINE_integer('train_epochs', None, 'Training epochs')
-flags.DEFINE_integer('valid_batch_size', 336, 'Validation batch size')
+flags.DEFINE_integer('valid_batch_size', 270, 'Validation batch size')
 flags.DEFINE_integer('valid_epochs', None, 'Validation epochs')
 flags.DEFINE_boolean('shuffle_batches', True, 'Whether to shuffle batches')
 flags.DEFINE_float('learning_rate', 0.001, 'Learning rate')
-flags.DEFINE_integer('num_classes', 48, 'Number of classification classes')
+flags.DEFINE_integer('num_classes', 34, 'Number of classification classes')
 flags.DEFINE_float('keep_prob', 0.75, 'L2 dropout, percentage to keep with each training batch')
 flags.DEFINE_integer('valid_steps', 10, 'Number of training steps between between validation steps')
 flags.DEFINE_integer('image_summary_steps', 200, 'Number of training steps between generating an image summary')
@@ -305,7 +305,7 @@ def main(argv=None):
     # Calculate loss
     with tf.name_scope('cross_entropy'):
         # Define loss and optimizer
-        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y_))
+        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y_))
         cost_summary = tf.summary.scalar("cost_summary", cost)
 
     # Run optimizer step
