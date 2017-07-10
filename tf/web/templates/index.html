@@ -95,16 +95,23 @@
         <img src="{{url_for('static',filename='hourglass.gif')}}" class="loading_img"/>Thinking about it ...
       </div>
       <div id="prediction" style="display: none" class="center_div">
-        <p><h4>I think this is {{ prediction_1 }} ({{ score_1 }}%).</h4></p>
-        <p>
-          My other guesses would be:
-          <ul>
-            <li>{{ prediction_2 }} ({{ score_2 }}%)</li>
-            <li>{{ prediction_3 }} ({{ score_3 }}%)</li>
-            <li>{{ prediction_4 }} ({{ score_4 }}%)</li>
-            <li>{{ prediction_5 }} ({{ score_5 }}%)</li>
-          </ul>
-        </p>
+        {% for b64,p1,p2,p3,p4,p5,s1,s2,s3,s4,s5 in matched_faces %}
+            <div>
+                <p class="lead">
+                <img src="data:image/png;base64,{{ b64 }}" height="30" alt="{{ p1 }}">
+                </p>
+                <p><h4>I think this is {{ p1 }} ({{ s1 }}%).</h4></p>
+                <p>
+                  My other guesses would be:
+                  <ul>
+                    <li>{{ p2 }} ({{ s2 }}%)</li>
+                    <li>{{ p3 }} ({{ s3 }}%)</li>
+                    <li>{{ p4 }} ({{ s4 }}%)</li>
+                    <li>{{ p5 }} ({{ s5 }}%)</li>
+                  </ul>
+                </p>
+            </div>
+        {% endfor %}
       </div>
       <div id="error" style="display: none">
         <p>Uh oh. I either couldn't find a face in the picture, or some other gremlins caused this.</p>
