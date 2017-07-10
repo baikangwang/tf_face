@@ -124,7 +124,7 @@ def detect_face_opencv(image_content):
 
         # Get user supplied values
         # imagePath = sys.argv[1]
-        cascPath = os.path.join(flask_app._static_folder, "/haarcascade_frontalface_default.xml")
+        cascPath = os.path.join(flask_app._static_folder, "haarcascade_frontalface_default.xml")
         print(cascPath)
         # Create the haar cascade
         faceCascade = cv2.CascadeClassifier(cascPath)
