@@ -10,3 +10,5 @@ logs/
 model/
 valid.txt
 train.txt
+base_run/
+custom_run/
